@@ -1,0 +1,5 @@
+{
+  "name": "MeetGenius AI",
+  "description": "An enterprise-grade meeting intelligence engine that transforms raw transcripts into structured, actionable outcomes using advanced Gemini reasoning.",
+  "requestFramePermissions": []
+}
