@@ -209,8 +209,7 @@ export const runCorrectiveOrchestration = async (
   authProvider: string | null,
   isAudio: boolean
 ): Promise<OrchestrationData> => {
-  const ai = new GoogleGenAI({ apiKey: "AIzaSyCWl5EzNR7FMDFuOl3HEN2anCourMmzpvc" });
-
+  const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
   try {
     const prompt = `
       LOGGED-IN USER (SENDER): ${userEmail || "MISSING"}
