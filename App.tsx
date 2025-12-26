@@ -12,14 +12,17 @@ const App: React.FC = () => {
   const [data, setData] = useState<OrchestrationData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  const handleLogin = (authenticatedUser: User) => {
+  const handleLoginSuccess = (token: string | null, authenticatedUser: User) => {
+    setAccessToken(token);
     setUser(authenticatedUser);
     setStatus(AppStatus.IDLE);
   };
 
   const handleLogout = () => {
     setUser(null);
+    setAccessToken(null);
     setData(null);
     setStatus(AppStatus.IDLE);
   };
@@ -34,7 +37,6 @@ const App: React.FC = () => {
     setError(null);
     
     try {
-      // Determine if input is audio based on the input text content (since AssetUpload passes descriptions for media)
       const isAudio = input.includes("Processing Media Asset:");
       
       const result = await runCorrectiveOrchestration(
@@ -60,11 +62,11 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
-      <Header />
+     <Header user={user} />
       
       <main className="max-w-7xl mx-auto px-4 mt-12">
         {!user ? (
-          <Login onLogin={handleLogin} />
+          <Login onLoginSuccess={handleLoginSuccess} />
         ) : (
           <>
             {status === AppStatus.IDLE && (
@@ -75,9 +77,9 @@ const App: React.FC = () => {
                     Identity Verified: {user.email}
                   </div>
                   <h2 className="text-5xl font-black text-slate-900 tracking-tight leading-tight">Meeting Intelligence & Workflow Automation</h2>
-                  <p className="text-slate-500 mt-4 text-xl leading-relaxed">Corrective orchestration for high-stakes enterprise meetings. Built for Outlook execution.</p>
+                  <p className="text-slate-500 mt-4 text-xl leading-relaxed">Corrective orchestration for high-stakes enterprise meetings. Built for Gmail execution.</p>
                 </div>
-                <AssetUpload onProcess={handleProcessInput} />
+                <AssetUpload onProcess={handleProcessInput} accessToken={accessToken} />
               </div>
             )}
 
@@ -144,7 +146,7 @@ const App: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                <MeetingResults orchestration={data} />
+                <MeetingResults orchestration={data} user={user} accessToken={accessToken} />
               </div>
             )}
           </>

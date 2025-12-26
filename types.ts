@@ -110,6 +110,7 @@ export interface OrchestrationData {
   meeting_metadata?: {
     meeting_title: string | null;
     attendees: Attendee[];
+    meeting_date?: string;
   };
 }
 
@@ -124,4 +125,5 @@ export enum AppStatus {
 export interface User {
   email: string;
   provider: 'google' | 'microsoft' | 'email';
+  accessToken?: string;
 }
